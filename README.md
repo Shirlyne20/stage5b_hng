@@ -49,6 +49,7 @@ To deploy the setup, run the following command:
 
 ```bash
 ansible-playbook main.yaml -b
+```
 
 ## Additional Information
 Ensure that your inventory file `inventory.cfg` specifies the host as `hng`
