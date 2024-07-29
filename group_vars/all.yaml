@@ -1,0 +1,16 @@
+git_branch: "devops"
+git_repo: "https://github.com/hngprojects/hng_boilerplate_python_fastapi_web.git"
+local_repo: "/opt/stage_5b"
+venv: "venv"
+log_dir: "/var/log/stage_5b"
+postgres_cred_dir: "/var/secrets"
+log_stderr: "/var/log/stage_5b/error.log"
+log_stdout: "/var/log/stage_5b/out.log"
+postgres_cred: "/var/secrets/pg_pw.txt"
+deploy_user: "hng"
+deploy_passwd: "{{ deploy_user }}"
+app_port: 3000
+nginx_port: 80
+postgres_db: "database"
+postgres_admin_user: "admin"
+postgres_admin_password: "passwd"
