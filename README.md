@@ -49,3 +49,13 @@ To deploy the setup, run the following command:
 
 ```bash
 ansible-playbook main.yaml -b
+
+## Additional Information
+Ensure that your inventory file `inventory.cfg` specifies the host as `hng`
+For example,when configuring locally I used:
+
+```bash
+[hng]
+localhost ansible_connection=local ansible_become=true ansible_become_method=sudo ansible_become_flags='-H -S' ansible_remote_tmp=~/ansible_tmp ansible_python_interpreter=/usr/bin/python3
+```
+
