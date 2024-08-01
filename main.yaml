@@ -149,8 +149,11 @@
       apt:
         name: postgresql
         state: present
-        
-    - postgresql-contrib
+
+    - name: Install PostgreSQL contrib
+      apt:
+        name: postgresql-contrib
+        state: present   
 
     - name: Ensure PostgreSQL service is running
       service:
