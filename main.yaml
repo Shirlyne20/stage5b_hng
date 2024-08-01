@@ -115,7 +115,6 @@
         group: "{{ deploy_user }}"
         mode: '0600'
 
-    # Step 5: Ensure required Python packages are installed
     - name: Ensure python3-venv is installed
       apt:
         name: python3-venv
@@ -126,7 +125,9 @@
         name: python3-psycopg2
         state: present
 
-    # Step 6: Clone the git repository
+    - name: Configure Git to recognize /opt/stage_5b as a safe directory
+      command: git config --global --add safe.directory /opt/stage_5b
+
     - name: Clone the git repository
       git:
         repo: "{{ git_repo }}"
@@ -134,7 +135,6 @@
         version: "{{ git_branch }}"
         force: yes
 
-    # Step 7: Create a virtual environment and install the required packages
     - name: Create virtual environment
       command: python3 -m venv "{{ local_repo }}/{{ venv }}"
       args:
@@ -145,7 +145,6 @@
         requirements: "{{ local_repo }}/requirements.txt"
         virtualenv: "{{ local_repo }}/{{ venv }}"
 
-    # Step 8: Set up PostgreSQL
     - name: Install PostgreSQL
       apt:
         name: postgresql
@@ -158,14 +157,13 @@
         enabled: yes
 
     - name: Create PostgreSQL database
-  become: yes
-  become_user: postgres
-  community.postgresql.postgresql_db:
-    name: "{{ postgres_db }}"
-    state: present
-    login_user: "postgres"
-    db: "postgres"
-
+      become: yes
+      become_user: postgres
+      community.postgresql.postgresql_db:
+        name: "{{ postgres_db }}"
+        state: present
+        login_user: "postgres"
+        db: "postgres"
 
     - name: Create PostgreSQL admin user
       become: yes
@@ -212,7 +210,6 @@
         login_user: "postgres"
         login_password: "{{ postgres_admin_password }}"
 
-    # Step 9: Configure the application environment
     - name: Copy .env.sample to .env
       copy:
         src: "{{ local_repo }}/.env.sample"
@@ -245,7 +242,6 @@
         regexp: '^DB_PASSWORD='
         line: "DB_PASSWORD={{ postgres_admin_password }}"
 
-    # Step 10: Run the FastAPI application
     - name: Run FastAPI application
       shell: |
         . {{ local_repo }}/{{ venv }}/bin/activate
@@ -255,7 +251,6 @@
       async: 0
       poll: 0
 
-    # Step 11: Install and configure Nginx
     - name: Add Nginx signing key
       apt_key:
         url: https://nginx.org/keys/nginx_signing.key
