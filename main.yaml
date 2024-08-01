@@ -134,6 +134,7 @@
         dest: "{{ local_repo }}"
         version: "{{ git_branch }}"
         force: yes
+      become: yes
 
     - name: Create virtual environment
       command: python3 -m venv "{{ local_repo }}/{{ venv }}"
