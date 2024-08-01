@@ -158,7 +158,6 @@
 
     - name: Create PostgreSQL database
       become: yes
-      become_user: postgres
       community.postgresql.postgresql_db:
         name: "{{ postgres_db }}"
         state: present
@@ -167,7 +166,6 @@
 
     - name: Create PostgreSQL admin user
       become: yes
-      become_user: postgres
       community.postgresql.postgresql_user:
         name: "{{ postgres_admin_user }}"
         password: "{{ postgres_admin_password }}"
