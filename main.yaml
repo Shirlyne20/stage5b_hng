@@ -161,24 +161,15 @@
         state: started
         enabled: yes
 
-    - name: Create PostgreSQL database
-      become_user: postgres
-      community.postgresql.postgresql_db:
-        name: "{{ postgres_db }}"
-        state: present
-        login_user: "postgres"
-        db: "postgres"
+   - name: Configure PostgreSQL
+      block:
+        - name: Create PostgreSQL user
+          command: sudo -u postgres psql -c "CREATE USER {{ db_user }} WITH PASSWORD '{{ db_password }}'; ALTER USER {{ db_user }} WITH SUPERUSER;"
+          ignore_errors: yes
 
-    - name: Create PostgreSQL admin user
-      become_user: postgres
-      community.postgresql.postgresql_user:
-        name: "{{ postgres_admin_user }}"
-        password: "{{ postgres_admin_password }}"
-        db: "{{ postgres_db }}"
-        priv: "ALL"
-        state: present
-        login_user: "postgres"
-        login_password: "{{ postgres_admin_password }}"
+        - name: Create PostgreSQL database
+          command: sudo -u postgres psql -c "CREATE DATABASE {{ db_name }} OWNER {{ db_user }};"
+          ignore_errors: yes
 
     - name: Save PostgreSQL admin credentials to file
       copy:
