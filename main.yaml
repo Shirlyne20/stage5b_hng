@@ -187,21 +187,21 @@
         group: "{{ deploy_user }}"
         mode: '0600'
 
-    - name: Create a dummy table in PostgreSQL database
-      become: yes
-      community.postgresql.postgresql_query:
-        db: "{{ postgres_db }}"
-        query: "CREATE TABLE IF NOT EXISTS dummy_table (column1 VARCHAR(255), column2 VARCHAR(255));"
-        login_user: "postgres"
-        login_password: "{{ postgres_admin_password }}"
+    # - name: Create a dummy table in PostgreSQL database
+    #   become: yes
+    #   community.postgresql.postgresql_query:
+    #     db: "{{ postgres_db }}"
+    #     query: "CREATE TABLE IF NOT EXISTS dummy_table (column1 VARCHAR(255), column2 VARCHAR(255));"
+    #     login_user: "postgres"
+    #     login_password: "{{ postgres_admin_password }}"
 
-    - name: Insert dummy data into PostgreSQL database
-      become: yes
-      community.postgresql.postgresql_query:
-        db: "{{ postgres_db }}"
-        query: "INSERT INTO dummy_table (column1, column2) VALUES ('dummy1', 'dummy2');"
-        login_user: "postgres"
-        login_password: "{{ postgres_admin_password }}"
+    # - name: Insert dummy data into PostgreSQL database
+    #   become: yes
+    #   community.postgresql.postgresql_query:
+    #     db: "{{ postgres_db }}"
+    #     query: "INSERT INTO dummy_table (column1, column2) VALUES ('dummy1', 'dummy2');"
+    #     login_user: "postgres"
+    #     login_password: "{{ postgres_admin_password }}"
 
     - name: Copy .env.sample to .env
       copy:
